@@ -67,7 +67,7 @@ const HomeScreen = () => {
   return (
     <View className="flex flex-1 justify-center items-center bg-white" >
       <ScrollView className="w-[100%] px-[20px]">
-        <Text className="bg-black text-white p-[10px] my-[20px] mx-[40px] text-[26px] text-center">
+        <Text className="bg-black text-white py-[10px] px-[40px] my-[20px] text-[26px] text-center">
             Check Out Some Amazing Recipes!
         </Text>
         <Image

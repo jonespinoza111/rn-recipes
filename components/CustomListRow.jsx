@@ -10,7 +10,7 @@ import RecipeThumbnail from "./RecipeThumbnail";
 
 const CustomListRow = ({ recipes, buttonTitle, param }) => {
   return (
-    <ScrollView horizontal={true}>
+    <ScrollView className="pb-2" horizontal={true}>
       {recipes ? (
         <React.Fragment>
           {recipes &&
