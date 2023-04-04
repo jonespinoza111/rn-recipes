@@ -12,10 +12,8 @@ const useFetch = (url, opts) => {
                 return res.json()
             })
             .then((res) => {
-                console.log('this is the res, ', res);
                 if (res) {
-                    console.log('Hello i just got the results back now');
-                    let recipes = [res];
+                    let recipes = [...res.results];
                     setResponse(response => response.concat(recipes));
                     setLoading(false);
                 } else {

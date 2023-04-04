@@ -30,7 +30,7 @@ const MyTabs = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={RecipeScreen}
+        component={ProfileScreen}
         options={{
           tabBarIcon: () => <FontAwesome name="user" size={20} color="black" />,
         }}
