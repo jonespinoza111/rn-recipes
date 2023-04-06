@@ -1,25 +1,21 @@
 import 'react-native-gesture-handler';
+
+import "firebase/auth";
+import "firebase/database";
+import "firebase/storage";
+
 import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import MyTabs from './components/MyTabs';
-import HomeScreen from './screens/HomeScreen';
 import Navigator from './components/Navigator';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 
 export default function App() {
   return (
-    <NavigationContainer>
-        <Navigator />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+          <Navigator />
+      </NavigationContainer>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

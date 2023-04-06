@@ -7,6 +7,7 @@ import CustomRow from "../components/CustomRow";
 import OverviewDetails from "../components/OverviewDetails";
 import IngredientDetails from "../components/IngredientDetails";
 import InstructionDetails from "../components/InstructionDetails";
+import CustomButton from "../components/CustomButton";
 
 const RecipeScreen = ({ route }) => {
   //   const { recipeId } = route.params;
@@ -22,27 +23,29 @@ const RecipeScreen = ({ route }) => {
   //     }
   //   );
 
-  const [selectedTab, setSelectedTab] = useState("Overview");
-const [tabData, setTabData] = useState();
+  const addToFavorites = () => {
+    console.log('adding to favorites');
+  }
 
-const tabInfo = recipeData ? {
-    Ingredients: recipeData.extendedIngredients,
-    Instructions: recipeData.analyzedInstructions[0].steps,
-    Overview: {
-        title: recipeData.title,
-        source: recipeData.sourceName,
-        caloricBreakdown: recipeData.nutrition.caloricBreakdown,
-        prepTime: recipeData.preparationMinutes,
-        cookTime: recipeData.cookingMinutes
-    },
-} : { };
+  const removeFromFavorites = () => {
+    console.log('removing from favorites');
+  }
 
-  const tabHandler = (tabName) => {
-    console.log("This is the tabName", tabName);
-    setSelectedTab(tabName);
-    setTabData(tabInfo[tabName]);
-    console.log("Hello there");
-};
+
+
+
+  const tabInfo = recipeData ? {
+      Ingredients: recipeData.extendedIngredients,
+      Instructions: recipeData.analyzedInstructions[0].steps,
+      Overview: {
+          title: recipeData.title,
+          source: recipeData.sourceName,
+          caloricBreakdown: recipeData.nutrition.caloricBreakdown,
+          prepTime: recipeData.preparationMinutes,
+          cookTime: recipeData.cookingMinutes
+      },
+  } : { };
+
 
   return (
     <View className="flex flex-1 justify-start items-center">
@@ -84,6 +87,22 @@ const tabInfo = recipeData ? {
                 {Math.round(recipeData.nutrition.nutrients[0].amount)} Calories
               </Text>
             </View>
+          </View>
+          <View className="w-[90%] h-auto flex">
+              <CustomButton
+                  title={
+                      isFavorited
+                          ? "Remove from Favorites"
+                          : "Add to Favorites"
+                  }
+                  onPress={
+                      isFavorited
+                          ? removeFromFavorites
+                          : addToFavorites
+                  }
+                  buttonColor="bg-blue-200"
+                  textColor="black"
+              />
           </View>
           <View style={{ width: "100%", height: "auto" }}>
             <CustomRow itemDisplay="column">
