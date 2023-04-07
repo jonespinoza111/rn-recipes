@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { GET_USER_DATA } from "../actions/user-actions";
+import { getDatabase } from "firebase/database";
+import { firebaseApp } from "../../components/Navigator";
 
 export const userReducer = (state = {}, action) => {
     switch (action.type) {
@@ -15,10 +16,29 @@ export const userReducer = (state = {}, action) => {
     }
 };
 
-export const userSlicer = createSlice({
+export const userSlice = createSlice({
     name: 'userData',
     initialState: {},
     reducers: {
-        getUserData: () => {},
+        getUserData: async (state, action) => {
+            const db = getDatabase(firebaseApp);
+            const userData = await 
+            db
+            .ref(`users/${action.payload}`)
+            .once("value");
+            const updatedUserData = await userData.val();
+
+            const favorites =
+                updatedUserData &&
+                updatedUserData.favorites === ""
+                    ? Object.values(updatedUserData.favorites)
+                    : [];
+            return { ...updatedUserData, favorites }
+        },
     }
 })
+
+
+export const { getUserData } = userSlice.actions;
+
+export default userSlice.reducer;

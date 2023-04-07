@@ -5,9 +5,15 @@ import RecipeScreen from '../screens/RecipeScreen';
 import SearchResultsScreen from '../screens/SearchResultsScreen';
 import TabsScreen from '../screens/TabsScreen';
 
-import * as firebase from 'firebase';
+import { initializeApp } from 'firebase/app';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { firebaseConfig } from '../firebase.config';
 import LoadingScreen from '../screens/LoadingScreen';
+import AuthScreen from '../screens/AuthScreen';
+import { useDispatch } from 'react-redux';
+import { getUserData } from '../redux/reducers/user-reducer';
+import { auth } from '../App';
+
 
 const Stack = createStackNavigator();
 
@@ -17,31 +23,36 @@ const defaultStackNavOptions = {
     headerTitleAlign: 'center'
 }
 
+export const firebaseApp = initializeApp(firebaseConfig);
+
 const Navigator = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
     setIsLoading(false);
-    // firebase.auth().onAuthStateChanged(user => {
-    //     if (user) {
-    //         setIsSignedIn(true);
-    //         dispatch(getUserData(user.uid));
-    //         console.log('I have signed in now for real');
-    //     } else {
-    //         setIsSignedIn(false);
-    //     }
-    //     setIsLoading(false);
-    // });
-  }, [firebase]);
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            setIsSignedIn(true);
+            dispatch(getUserData(user.uid));
+            console.log('I have signed in now for real');
+        } else {
+            setIsSignedIn(false);
+        }
+        setIsLoading(false);
+    });
+  }, []);
 
   if (isLoading) {
     return <LoadingScreen />
   }
   return (
     <Stack.Navigator screenOptions={defaultStackNavOptions}>
+      {!isSignedIn ? (
+        <Stack.Screen name="Auth" component={AuthScreen} />
+      ) : (
         <React.Fragment>
             <Stack.Screen name="Home" component={TabsScreen} />
             <Stack.Screen name="Filters" component={FiltersScreen} />
@@ -52,6 +63,7 @@ const Navigator = () => {
             />
             <Stack.Screen name="Recipe" component={RecipeScreen} />
         </React.Fragment>
+      )}
     </Stack.Navigator>
   )
 }
