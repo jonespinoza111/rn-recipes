@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const useFetch = (url, opts) => {
+const useFetch = (url, opts, multiple = true) => {
     const [response, setResponse] = useState([])
     const [loading, setLoading] = useState(false)
     const [hasError, setHasError] = useState(false)
@@ -13,7 +13,7 @@ const useFetch = (url, opts) => {
             })
             .then((res) => {
                 if (res) {
-                    let recipes = [...res.results];
+                    let recipes = multiple ? [...res.results] : res;
                     setResponse(response => response.concat(recipes));
                     setLoading(false);
                 } else {

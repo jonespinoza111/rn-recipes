@@ -7,8 +7,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useDispatch } from 'react-redux';
 import { createDatabaseUser } from '../helpers/AuthFunctions';
-import { getAuth } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { firebaseApp } from './Navigator';
+import { auth } from '../App';
 
 const schema = yup.object().shape({
     name: yup.string().required("You must enter a name"),
@@ -34,12 +35,12 @@ const SignUpForm = ({ switchForm }) => {
 
     const onSubmit = async (data) => {
         try {
-
-            const auth = getAuth(firebaseApp)
-            await 
-                auth
-                .createUserWithEmailAndPassword(data.email, data.password)
+            console.log('here is the data', data);
+            
+            await createUserWithEmailAndPassword(auth, data.email, data.password)
                 .then(async (newUser) => {
+                    console.log('hello here here rhera');
+                    console.log('newuser.user.uid  ', newUser.user.uid);
                     createDatabaseUser(newUser.user.uid, data, dispatch);
                 })
                 .catch((err) =>

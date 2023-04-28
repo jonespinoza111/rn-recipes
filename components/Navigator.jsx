@@ -10,8 +10,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { firebaseConfig } from '../firebase.config';
 import LoadingScreen from '../screens/LoadingScreen';
 import AuthScreen from '../screens/AuthScreen';
-import { useDispatch } from 'react-redux';
-import { getUserData } from '../redux/reducers/user-reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserData, prepareUserData } from '../redux/reducers/user-reducer';
 import { auth } from '../App';
 
 
@@ -28,6 +28,7 @@ export const firebaseApp = initializeApp(firebaseConfig);
 const Navigator = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const userData = useSelector(user => user.userData);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,8 +37,8 @@ const Navigator = () => {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             setIsSignedIn(true);
-            dispatch(getUserData(user.uid));
-            console.log('I have signed in now for real');
+            console.log('I have signed in now for real', user.uid, userData);
+            dispatch(prepareUserData(user.uid));
         } else {
             setIsSignedIn(false);
         }
@@ -54,7 +55,7 @@ const Navigator = () => {
         <Stack.Screen name="Auth" component={AuthScreen} />
       ) : (
         <React.Fragment>
-            <Stack.Screen name="Home" component={TabsScreen} />
+            <Stack.Screen name="Main" component={TabsScreen} />
             <Stack.Screen name="Filters" component={FiltersScreen} />
             <Stack.Screen
                 name="Search Results"

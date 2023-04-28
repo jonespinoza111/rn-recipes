@@ -8,20 +8,22 @@ import OverviewDetails from "../components/OverviewDetails";
 import IngredientDetails from "../components/IngredientDetails";
 import InstructionDetails from "../components/InstructionDetails";
 import CustomButton from "../components/CustomButton";
+import LoadingScreen from "./LoadingScreen";
 
 const RecipeScreen = ({ route }) => {
-  //   const { recipeId } = route.params;
+    const { recipeId } = route.params;
   const [isFavorited, setIsFavorited] = useState(false);
 
-  //   const [response, loading, hasError] = useFetch(
-  //     `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=true&apiKey=4c14342fb0bf4bcdb5952945a0e7e7ca`,
-  //     {
-  //         method: "GET",
-  //         headers: {
-  //             "Content-Type": "application/json",
-  //         },
-  //     }
-  //   );
+    const [response, loading, hasError] = useFetch(
+      `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=true&apiKey=4c14342fb0bf4bcdb5952945a0e7e7ca`,
+      {
+          method: "GET",
+          headers: {
+              "Content-Type": "application/json",
+          },
+      },
+      false
+    );
 
   const addToFavorites = () => {
     console.log('adding to favorites');
@@ -34,18 +36,23 @@ const RecipeScreen = ({ route }) => {
 
 
 
-  const tabInfo = recipeData ? {
-      Ingredients: recipeData.extendedIngredients,
-      Instructions: recipeData.analyzedInstructions[0].steps,
+  const tabInfo = response[0] ? {
+      Ingredients: response[0].extendedIngredients,
+      Instructions: response[0].analyzedInstructions[0].steps,
       Overview: {
-          title: recipeData.title,
-          source: recipeData.sourceName,
-          caloricBreakdown: recipeData.nutrition.caloricBreakdown,
-          prepTime: recipeData.preparationMinutes,
-          cookTime: recipeData.cookingMinutes
+          title: response[0].title,
+          source: response[0].sourceName,
+          caloricBreakdown: response[0].nutrition.caloricBreakdown,
+          prepTime: response[0].preparationMinutes,
+          cookTime: response[0].cookingMinutes
       },
   } : { };
 
+  if (loading || response.length < 1) {
+    return (
+      <LoadingScreen />
+    )
+  }
 
   return (
     <View className="flex flex-1 justify-start items-center">
@@ -53,14 +60,14 @@ const RecipeScreen = ({ route }) => {
         <View className="h-[200px] w-[100%] flex justify-center items-center">
           <Image
             resizeMode="cover"
-            source={{ uri: recipeData.image }}
+            source={{ uri: response[0].image }}
             className="w-[100%] h-[100%] rounded"
           ></Image>
         </View>
         <View className="flex py-[15px] items-center w-[100%] h-auto bg-white">
           <View className="w-[80%] h-auto flex flex-row justify-center items-center mb-[10px]">
             <Text className="text-[20px] text-black text-center capitalize">
-              {recipeData.title}
+              {response[0].title}
             </Text>
           </View>
           <View className="w-[90%] h-auto flex row justify-evenly items-center gap-y-1">
@@ -69,14 +76,14 @@ const RecipeScreen = ({ route }) => {
                 className="text-orange-200 mr-[5px] text-[15px]"
                 name="stopwatch"
               />
-              <Text>{recipeData.readyInMinutes} min(s)</Text>
+              <Text>{response[0].readyInMinutes} min(s)</Text>
             </View>
             <View className="flex flex-row justify-center items-center">
               <FontAwesome5
                 className="text-orange-200 mr-[5px] text-[15px]"
                 name="user"
               />
-              <Text>{recipeData.servings} Serving(s)</Text>
+              <Text>{response[0].servings} Serving(s)</Text>
             </View>
             <View className="flex flex-row justify-center items-center">
               <FontAwesome5
@@ -84,7 +91,7 @@ const RecipeScreen = ({ route }) => {
                 name="tint"
               />
               <Text className="text-black">
-                {Math.round(recipeData.nutrition.nutrients[0].amount)} Calories
+                {Math.round(response[0].nutrition.nutrients[0].amount)} Calories
               </Text>
             </View>
           </View>

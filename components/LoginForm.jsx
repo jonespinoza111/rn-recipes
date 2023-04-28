@@ -3,8 +3,12 @@ import React from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import CustomButton from './CustomButton';
 import * as yup from "yup";
+import * as WebBrowser from 'expo-web-browser';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { firebaseApp } from './Navigator';
+import GoogleSignInButton from './GoogleSignInButton';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../App';
 
 const schema = yup.object().shape({
   email: yup
@@ -17,6 +21,8 @@ const schema = yup.object().shape({
       .min(6, "Your password must be at least 6 charcters"),
 });
 
+WebBrowser.maybeCompleteAuthSession();
+
 
 const LoginForm = ({ switchForm }) => {
 
@@ -25,10 +31,9 @@ const LoginForm = ({ switchForm }) => {
   });
 
   const onSubmit = (data) => {
-    try {
-        firebaseApp
-            .auth()
-            .signInWithEmailAndPassword(data.email, data.password)
+    try {   
+
+            signInWithEmailAndPassword(auth, data.email, data.password)
             .then((user) => console.log("This is the signedin user", user))
             .catch((err) =>
                 console.log("There was an error signing in ", err)
@@ -90,7 +95,7 @@ const LoginForm = ({ switchForm }) => {
               buttonColor="bg-blue-200"
               textColor="text-black"
           />
-          {/* <GoogleSignInButton /> */}
+          <GoogleSignInButton />
           {/* <CustomButton title="Login" onPress={handleSubmit(onSubmit)} buttonColor="black" textColor="white" /> */}
           <TouchableOpacity className="flex justify-center items-center w-[100%] mt-[15px]" onPress={switchForm}>
               <Text className="text-[#2e82b6]">

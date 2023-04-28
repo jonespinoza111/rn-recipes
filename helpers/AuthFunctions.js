@@ -1,30 +1,29 @@
-import { getDatabase } from 'firebase/database';
-import { getStorage } from 'firebase/storage';
+import { getDatabase, ref, set } from 'firebase/database';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { getStorage, ref as storageRef } from 'firebase/storage';
+import { db, firestore, storage } from '../App';
 import { firebaseApp } from '../components/Navigator';
 
 import { getUserData } from '../redux/reducers/user-reducer';
 
 export const createDatabaseUser = async (uid, data, dispatch) => {
     try {
-        const storage = getStorage(firebaseApp);
-        const defaultProfileImage = 
-            await storage
-                .ref("images/no-profile.jpg")
-                .getDownloadURL()
+        // const storage = getStorage(firebaseApp);
+        // const defaultProfileImage = ref(storage, "images/no-profile.jpg");
 
-        const db = getDatabase(firebaseApp);
-        await 
-            db
-            .ref(`users/${uid}`)
-            .set({
-                name: data.name,
-                description: "Food Novice",
-                email: data.email,
-                favorites: "",
-                profileImage: data.profileImage || defaultProfileImage || "",
-            });
+        console.log("default profile img 1, ", data);
+        console.log("default profile img 2, ", uid);
 
-        dispatch(getUserData(uid));
+        const docRef = await setDoc(doc(firestore, 'users', uid), {
+            name: data.name,
+            description: "Food Novice",
+            email: data.email,
+            favorites: "",
+            profileImage: data.profileImage || "",
+        })
+
+        console.log('db write ', docRef);
+        // dispatch(getUserData(uid));
     } catch (err) {
         console.log('Could not create user in database', err);
     }
@@ -37,7 +36,7 @@ export const isUserEqual = (googleUser, firebaseUser) => {
         for (var i = 0; i < providerData.length; i++) {
             if (
                 providerData[i].providerId ===
-                    firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
+                    firebaseApp.auth.GoogleAuthProvider.PROVIDER_ID &&
                 providerData[i].uid === googleUser.getBasicProfile().getId()
             ) {
                 // We don't need to reauth the Firebase connection.
@@ -49,16 +48,18 @@ export const isUserEqual = (googleUser, firebaseUser) => {
 };
 
 export const onSignIn = (googleUser, idToken, dispatch) => {
+    console.log('mate amte amate');
     console.log("Google Auth Response", googleUser);
     // We need to register an Observer on Firebase Auth to make sure auth is initialized.
-    const unsubscribe = firebase
+    const unsubscribe = firebaseApp
         .auth()
         .onAuthStateChanged((firebaseUser) => {
+            console.log('firebase firebase ', firebaseUser);
             unsubscribe();
             // Check if we are already signed-in Firebase with the correct user.
             if (!isUserEqual(googleUser, firebaseUser)) {
                 // Build Firebase credential with the Google ID token.
-                const credential = firebase.auth.GoogleAuthProvider.credential(
+                const credential = firebaseApp.auth.GoogleAuthProvider.credential(
                     idToken
                 );
                 // Sign in with credential from the Google user.
@@ -68,10 +69,13 @@ export const onSignIn = (googleUser, idToken, dispatch) => {
                     profileImage: googleUser.photoUrl || null   
                 }
 
-                firebase
+                firebaseApp
                     .auth()
                     .signInWithCredential(credential)
-                    .then((cred) => createDatabaseUser(cred.user.uid, userData, dispatch))
+                    .then((cred) => {
+                        console.log('cred.user.uid ', cred.user.uid)
+                        createDatabaseUser(cred.user.uid, userData, dispatch)
+                    })
                     .catch((err) =>
                         console.log("There was an error signing in", err)
                     );

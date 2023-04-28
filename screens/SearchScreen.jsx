@@ -10,7 +10,7 @@ const SearchScreen = ({ navigation }) => {
   return (
     <View className="flex justify-start items-center flex-1 px-[10px] pt-[10px]">
         <Searchbar
-            placeholder="Search"
+            placeholder="Search for a recipe"
             onChangeText={query => setsearchQuery(query)}
             value={searchQuery}
             onIconPress={() => onPressHandler(searchQuery)}

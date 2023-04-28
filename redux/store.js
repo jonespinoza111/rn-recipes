@@ -5,8 +5,8 @@ import userDataReducer from './reducers/user-reducer';
 
 
 const rootReducer = combineReducers({
+    userData: userDataReducer,
     filters: filtersReducer,
-    userData: userDataReducer
 })
 
 

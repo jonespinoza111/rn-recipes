@@ -6,4 +6,5 @@ export const firebaseConfig = {
   messagingSenderId: "922034139140",
   appId: "1:922034139140:web:4e24ceacb14f1bd39dc551",
   measurementId: "G-SRW91ECG2J",
+  databaseURL: "https://rn-recipes-566aa.us-east1.firebasedatabase.app"
 };

@@ -4,6 +4,7 @@ import CustomListRow from '../components/CustomListRow';
 import CustomRow from '../components/CustomRow';
 import RecipeListItem from '../components/RecipeListItem';
 import { categories, cuisines, diets } from "../data/data";
+import { useSelector } from 'react-redux';
 
 
 
@@ -15,6 +16,8 @@ const HomeScreen = () => {
   const [chosenCategory, setChosenCategory] = useState({ title: "" });
   const [chosenCuisine, setChosenCuisine] = useState({ title: "" });
   const [chosenDiet, setChosenDiet] = useState({ title: "" });
+
+  const userData = useSelector(state => state.userData);
 
   const getData = useCallback(async () => {
     const category =
@@ -63,6 +66,8 @@ const HomeScreen = () => {
     getData();
   }, [getData]);
 
+
+  console.log('userdata herer eerere ', userData);
 
   return (
     <View className="flex flex-1 justify-center items-center bg-white" >
@@ -144,14 +149,12 @@ const HomeScreen = () => {
                 extraStyles='px-0 mx-0'
                 itemDisplay="column"
             >
-                <TouchableOpacity
-                    onPress={() => console.log('hello')}
-                >
+               
                     <Button
                         title={`View all ${chosenCuisine.title || ""}`}
                         color="black"
+                        onPress={() => console.log('hello userstate ', userData)}
                     />
-                </TouchableOpacity>
             </CustomRow>
         </CustomRow>
       </ScrollView>
