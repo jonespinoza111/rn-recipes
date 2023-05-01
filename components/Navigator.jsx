@@ -13,6 +13,8 @@ import AuthScreen from '../screens/AuthScreen';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserData, prepareUserData } from '../redux/reducers/user-reducer';
 import { auth } from '../App';
+import EditProfileScreen from '../screens/EditProfileScreen';
+import ImageOptionsScreen from '../screens/ImageOptionsScreen';
 
 
 const Stack = createStackNavigator();
@@ -56,6 +58,8 @@ const Navigator = () => {
       ) : (
         <React.Fragment>
             <Stack.Screen name="Main" component={TabsScreen} />
+            <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
+            <Stack.Screen name="Image Options" component={ImageOptionsScreen} />
             <Stack.Screen name="Filters" component={FiltersScreen} />
             <Stack.Screen
                 name="Search Results"

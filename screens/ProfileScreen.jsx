@@ -88,7 +88,7 @@ const ProfileScreen = ({ navigation }) => {
             <View className="flex flex-col justify-center items-center py-[15px] px-[20px] w-[100%] bg-white h-auto">
                 <CustomButton
                     title="Edit Profile"
-                    onPress={() => console.log('hello')}
+                    onPress={() => navigation.navigate('Edit Profile')}
                     buttonColor="bg-blue-200"
                     textColor="text-black"
                 />
