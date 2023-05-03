@@ -6,6 +6,12 @@ import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
 import CustomButton from '../components/CustomButton';
+import * as Random from 'expo-random';
+import { auth, firestore, storage } from '../App';
+import { doc, updateDoc } from '@firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
+import { prepareUserData } from '../redux/reducers/user-reducer';
+import { deleteImageFromStorage, uploadImageToStorage } from '../helpers/StorageFunctions';
 
 const schema = yup.object().shape({
     name: yup.string().required("You must enter a name").min(6),
@@ -31,9 +37,27 @@ const EditProfileScreen = ({ navigation }) => {
 
     const [pickedImage, setPickedImage] = useState(userData.profileImage);
 
+    const onSubmit = async (data) => {
+        let downloadUrl;
+        const currentImage = userData.profileImage;
+        let uid = auth.currentUser.uid;
+        if (userData.profileImage !== pickedImage) {
+            downloadUrl = await uploadImageToStorage(pickedImage);
+            await deleteImageFromStorage(currentImage)
+        }
+        
 
-    const onSubmit = () => {
-        console.log('submitting profile updates form now');
+        const userRef = doc(firestore, "users", `${uid}`)
+
+        await updateDoc(userRef, {
+            name: data.name,
+            email: data.email,
+            description: data.description,
+            profileImage: downloadUrl || userData.profileImage
+        })
+        .then(() => dispatch(prepareUserData(uid)))
+        .then(() => navigation.goBack())
+        .catch((err) => console.log('There was an error updating the user data ', err));
     }
   return (
     <View className="flex-1 flex justify-start items-center bg-white">

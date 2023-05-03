@@ -3,12 +3,30 @@ import React, { useState } from 'react'
 import CustomButton from '../components/CustomButton';
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from '@react-navigation/native';
+import { Button } from 'react-native';
 
 const ImageOptionsScreen = ({ route }) => {
     const { setPickedImage } = route.params;
     const navigation = useNavigation();
 
     const [status, requestPermission] = ImagePicker.useCameraPermissions();
+
+    const openCamera = async () => {
+        console.log('opening camera ', status);
+        try {
+            let image = await ImagePicker.launchCameraAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1
+            });
+
+            console.log('new image takenv ', image);
+        } catch (err) {
+            console.log("can't open camera because ", err);
+        }
+
+    }
 
     const selectImageHandler = async (type) => {
         console.log('this is the status my dude', status);
@@ -23,7 +41,9 @@ const ImageOptionsScreen = ({ route }) => {
                     console.log('nice');
                 }
                 image = await ImagePicker.launchCameraAsync({
+                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
                     allowsEditing: true,
+                    base64: false,
                     aspect: [4, 3],
                     quality: 0.5
                 });
@@ -38,7 +58,7 @@ const ImageOptionsScreen = ({ route }) => {
 
             if (!image.canceled) {
                 console.log("cancelled");
-                setPickedImage(image.uri);
+                setPickedImage(image && image.uri);
             }
 
             navigation.goBack();
@@ -59,7 +79,7 @@ const ImageOptionsScreen = ({ route }) => {
     if (status && !status.granted) {
         console.log('candy');
         return (
-            <View className="bg-black w-[100%]">
+            <View className="bg-white w-[100%]">
                 <Text style={{ textAlign: 'center' }}>We need permission to use the camera.</Text>
                 <CustomButton title="Grant Permission" onPress={requestPermission} />
             </View>
@@ -67,7 +87,7 @@ const ImageOptionsScreen = ({ route }) => {
     }
   return (
     <View className="flex flex-1 px-[10%] pt-[10px] justify-start items-center bg-white" >
-        <CustomButton title="Take new photo" onPress={() => selectImageHandler('camera')} buttonColor="bg-blue-200" textColor="text-black" />
+        <CustomButton title="Take new photo" onPress={() => openCamera()} buttonColor="bg-blue-200" textColor="text-black" />
         <CustomButton title="Choose photo" onPress={() => selectImageHandler('library')} buttonColor="bg-blue-200" textColor="text-black" />
     </View>
   )

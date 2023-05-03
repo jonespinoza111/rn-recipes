@@ -113,15 +113,15 @@ const RecipeScreen = ({ route }) => {
           </View>
           <View style={{ width: "100%", height: "auto" }}>
             <CustomRow itemDisplay="column">
-                <Text className="text-[17px]">Overview</Text>
+                <Text className="bg-black text-orange-300 rounded py-2 px-4 text-[17px]">Overview</Text>
                 <OverviewDetails data={tabInfo.Overview} />
             </CustomRow>    
             <CustomRow itemDisplay="column">
-                <Text className="text-[17px]">Ingredients</Text>
+                <Text className="bg-black text-orange-300 rounded py-2 px-4 text-[17px]">Ingredients</Text>
                 <IngredientDetails data={tabInfo.Ingredients} />
             </CustomRow>
             <CustomRow itemDisplay="column">
-                <Text className="text-[17px]">Instructions</Text>
+                <Text className="bg-black text-orange-300 rounded py-2 px-4 text-[17px]">Instructions</Text>
                 <InstructionDetails
                     data={tabInfo.Instructions}
                 />

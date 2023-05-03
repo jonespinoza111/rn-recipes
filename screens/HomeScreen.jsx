@@ -5,6 +5,7 @@ import CustomRow from '../components/CustomRow';
 import RecipeListItem from '../components/RecipeListItem';
 import { categories, cuisines, diets } from "../data/data";
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -66,6 +67,12 @@ const HomeScreen = () => {
     getData();
   }, [getData]);
 
+  const navigation = useNavigation();
+
+  const onPressViewAllHandler = (param) => {
+    navigation.navigate("Search Results", { searchQuery: param });
+  };
+
 
   console.log('userdata herer eerere ', userData);
 
@@ -118,14 +125,11 @@ const HomeScreen = () => {
                 extraStyles='px-0 mx-0'
                 itemDisplay="column"
             >
-                <TouchableOpacity
-                    onPress={() => console.log('')}
-                >
-                    <Button
-                        title={`View all ${chosenCategory.title || ""}`}
-                        color="black"
-                    />
-                </TouchableOpacity>
+                <Button
+                    title={`View all ${chosenCategory.title || ""}`}
+                    color="black"
+                    onPress={() => onPressViewAllHandler(chosenCategory.title)}
+                />
             </CustomRow>
         </CustomRow>
 
@@ -153,7 +157,7 @@ const HomeScreen = () => {
                     <Button
                         title={`View all ${chosenCuisine.title || ""}`}
                         color="black"
-                        onPress={() => console.log('hello userstate ', userData)}
+                        onPress={() => onPressViewAllHandler(chosenCuisine.title)}
                     />
             </CustomRow>
         </CustomRow>
