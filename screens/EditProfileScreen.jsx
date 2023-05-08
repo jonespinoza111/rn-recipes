@@ -13,7 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import CustomButton from "../components/CustomButton";
 import * as Random from "expo-random";
-import { auth, firestore, storage } from "../App";
+import { auth, firestore, storage } from "../helpers/Firebase";
 import { doc, updateDoc } from "@firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 import { prepareUserData } from "../redux/reducers/user-reducer";

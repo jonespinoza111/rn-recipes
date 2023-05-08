@@ -7,9 +7,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useDispatch } from 'react-redux';
 import { createDatabaseUser } from '../helpers/AuthFunctions';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
-import { firebaseApp } from './Navigator';
-import { auth } from '../App';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../helpers/Firebase';
 
 const schema = yup.object().shape({
     name: yup.string().required("You must enter a name"),

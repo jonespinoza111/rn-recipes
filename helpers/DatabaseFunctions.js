@@ -5,7 +5,7 @@ import {
   getDocs,
   setDoc,
 } from "@firebase/firestore";
-import { auth, firestore } from "../App";
+import { auth, firestore } from "../helpers/Firebase";
 
 export const addToFavorites = async (uid, recipeId, updateObject) => {
   console.log("I am now adding to favorites");

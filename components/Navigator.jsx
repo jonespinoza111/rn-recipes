@@ -5,14 +5,12 @@ import RecipeScreen from '../screens/RecipeScreen';
 import SearchResultsScreen from '../screens/SearchResultsScreen';
 import TabsScreen from '../screens/TabsScreen';
 
-import { initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { firebaseConfig } from '../firebase.config';
+import { onAuthStateChanged } from "firebase/auth";
 import LoadingScreen from '../screens/LoadingScreen';
 import AuthScreen from '../screens/AuthScreen';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserData, prepareUserData } from '../redux/reducers/user-reducer';
-import { auth } from '../App';
+import { prepareUserData } from '../redux/reducers/user-reducer';
+import { auth } from '../helpers/Firebase';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import ImageOptionsScreen from '../screens/ImageOptionsScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
@@ -25,8 +23,6 @@ const defaultStackNavOptions = {
     headerTitleStyle: { color: 'black' },
     headerTitleAlign: 'center'
 }
-
-export const firebaseApp = initializeApp(firebaseConfig);
 
 const Navigator = () => {
   const [isLoading, setIsLoading] = useState(true);

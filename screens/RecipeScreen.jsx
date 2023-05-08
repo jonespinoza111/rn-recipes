@@ -9,7 +9,7 @@ import IngredientDetails from "../components/IngredientDetails";
 import InstructionDetails from "../components/InstructionDetails";
 import CustomButton from "../components/CustomButton";
 import LoadingScreen from "./LoadingScreen";
-import { auth } from "../App";
+import { auth } from "../helpers/Firebase";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToFavorites,

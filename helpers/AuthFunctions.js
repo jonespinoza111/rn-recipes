@@ -1,14 +1,13 @@
 import { getDatabase, ref, set } from 'firebase/database';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { getStorage, ref as storageRef } from 'firebase/storage';
-import { db, firestore, storage } from '../App';
-import { firebaseApp } from '../components/Navigator';
+import { app, db, firestore, storage } from '../helpers/Firebase';
 
 import { getUserData } from '../redux/reducers/user-reducer';
 
 export const createDatabaseUser = async (uid, data, dispatch) => {
     try {
-        // const storage = getStorage(firebaseApp);
+        // const storage = getStorage(app);
         // const defaultProfileImage = ref(storage, "images/no-profile.jpg");
 
         console.log("default profile img 1, ", data);
@@ -36,7 +35,7 @@ export const isUserEqual = (googleUser, firebaseUser) => {
         for (var i = 0; i < providerData.length; i++) {
             if (
                 providerData[i].providerId ===
-                    firebaseApp.auth.GoogleAuthProvider.PROVIDER_ID &&
+                    app.auth.GoogleAuthProvider.PROVIDER_ID &&
                 providerData[i].uid === googleUser.getBasicProfile().getId()
             ) {
                 // We don't need to reauth the Firebase connection.
@@ -51,7 +50,7 @@ export const onSignIn = (googleUser, idToken, dispatch) => {
     console.log('mate amte amate');
     console.log("Google Auth Response", googleUser);
     // We need to register an Observer on Firebase Auth to make sure auth is initialized.
-    const unsubscribe = firebaseApp
+    const unsubscribe = app
         .auth()
         .onAuthStateChanged((firebaseUser) => {
             console.log('firebase firebase ', firebaseUser);
@@ -59,7 +58,7 @@ export const onSignIn = (googleUser, idToken, dispatch) => {
             // Check if we are already signed-in Firebase with the correct user.
             if (!isUserEqual(googleUser, firebaseUser)) {
                 // Build Firebase credential with the Google ID token.
-                const credential = firebaseApp.auth.GoogleAuthProvider.credential(
+                const credential = app.auth.GoogleAuthProvider.credential(
                     idToken
                 );
                 // Sign in with credential from the Google user.
@@ -69,7 +68,7 @@ export const onSignIn = (googleUser, idToken, dispatch) => {
                     profileImage: googleUser.photoUrl || null   
                 }
 
-                firebaseApp
+                app
                     .auth()
                     .signInWithCredential(credential)
                     .then((cred) => {

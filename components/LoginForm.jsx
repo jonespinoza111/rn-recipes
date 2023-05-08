@@ -5,10 +5,9 @@ import CustomButton from './CustomButton';
 import * as yup from "yup";
 import * as WebBrowser from 'expo-web-browser';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { firebaseApp } from './Navigator';
 import GoogleSignInButton from './GoogleSignInButton';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../App';
+import { auth } from '../helpers/Firebase';
 
 const schema = yup.object().shape({
   email: yup

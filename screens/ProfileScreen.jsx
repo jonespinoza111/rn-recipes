@@ -10,7 +10,7 @@ import RecipeThumbnail from "../components/RecipeThumbnail";
 import { useSelector } from "react-redux";
 import CustomButton from "../components/CustomButton";
 import { signOut } from "firebase/auth";
-import { auth } from "../App";
+import { auth } from "../helpers/Firebase";
 import NoProfileImage from "../assets/images/no-profile.jpg";
 
 const ProfileScreen = ({ navigation }) => {

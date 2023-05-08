@@ -1,5 +1,5 @@
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "@firebase/storage";
-import { auth, storage } from "../App";
+import { auth, storage } from "../helpers/Firebase";
 import * as Random from 'expo-random';
 
 export const uploadImageToStorage = async (image) => {
