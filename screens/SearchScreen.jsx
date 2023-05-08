@@ -1,6 +1,7 @@
 import { View, Text, Button } from 'react-native'
 import React, { useState } from 'react'
 import { Searchbar } from 'react-native-paper';
+import CustomButton from '../components/CustomButton';
 
 const SearchScreen = ({ navigation }) => {
     const [searchQuery, setsearchQuery] = useState('');
@@ -15,8 +16,13 @@ const SearchScreen = ({ navigation }) => {
             value={searchQuery}
             onIconPress={() => onPressHandler(searchQuery)}
         />
-        <View className="mt-[10px]">
-            <Button className="mt-[10px] bg-black" title="Find Recipes" onPress={() => onPressHandler(searchQuery)} />
+        <View className="mt-[10px] w-[90%]">
+            <CustomButton
+                title="Search"
+                onPress={() => onPressHandler(searchQuery)}
+                buttonColor="bg-blue-200"
+                textColor="text-black"
+            />
         </View>
     </View>
   )

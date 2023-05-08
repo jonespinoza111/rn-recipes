@@ -2,6 +2,7 @@ import { View, Text, ActivityIndicator, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import useFetch from '../hooks/useFetch';
 import RecipeListItem from '../components/RecipeListItem';
+import { useSelector } from 'react-redux';
 
 const recipes = [
     {
@@ -68,12 +69,15 @@ const recipes = [
 ];
 
 const SearchResultsScreen = ({ route, navigation }) => {
+    const filters = useSelector(state => state.filters);
+
     const { searchQuery } = route.params;
     const sortParam = route.params.sort || 'popularity';
-    const intoleranceParam = '';
-    const dietParam = route.params.diet || '';
-    const typeParam = route.params.type || '';
-    const cuisineParam = route.params.cuisine || '';
+    const typeParam = filters.category || '';
+    const dietParam = filters.diet || '';
+    const intoleranceParam = filters.intolerance.length > 1 ? filters.intolerance.join(',') : (filters.intolerance[0] || '');
+    const cuisineParam = filters.cuisine.length > 1 ? filters.cuisine.join(',') : (filters.intolerance[0] || '');
+
     const fetchNumber = 10;
     const [offset, setOffset] = useState(0);
     const [initialLoad, setInitialLoad] = useState(false);
@@ -117,8 +121,6 @@ const SearchResultsScreen = ({ route, navigation }) => {
             )
         )
     }
-
-    console.log('HEre here is the response ', response);
 
   return (
     <View className="flex flex-1 justify-center items-center bg-white pt-[5px]">
