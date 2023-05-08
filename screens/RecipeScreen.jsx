@@ -9,49 +9,69 @@ import IngredientDetails from "../components/IngredientDetails";
 import InstructionDetails from "../components/InstructionDetails";
 import CustomButton from "../components/CustomButton";
 import LoadingScreen from "./LoadingScreen";
+import { auth } from "../App";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from "../helpers/DatabaseFunctions";
+import { prepareUserData } from "../redux/reducers/user-reducer";
 
 const RecipeScreen = ({ route }) => {
-    const { recipeId } = route.params;
-  const [isFavorited, setIsFavorited] = useState(false);
+  const uid = auth.currentUser.uid;
+  const dispatch = useDispatch();
+  const { recipeId } = route.params;
+  const favorites = useSelector((state) => state.userData.favorites);
+  const [isFavorited, setIsFavorited] = useState(
+    favorites.some((favorite) => favorite.id === recipeId)
+  );
 
-    const [response, loading, hasError] = useFetch(
-      `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=true&apiKey=4c14342fb0bf4bcdb5952945a0e7e7ca`,
-      {
-          method: "GET",
-          headers: {
-              "Content-Type": "application/json",
-          },
+  const [response, loading, hasError] = useFetch(
+    `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=true&apiKey=4c14342fb0bf4bcdb5952945a0e7e7ca`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
       },
-      false
-    );
+    },
+    false
+  );
 
-  const addToFavorites = () => {
-    console.log('adding to favorites');
-  }
+  const addFavorites = async () => {
+    let updateObj = {
+      id: recipeId,
+      title: response[0].title,
+      image: response[0].image,
+    };
+    await addToFavorites(uid, recipeId, updateObj).then(() => {
+      setIsFavorited(true);
+      dispatch(prepareUserData(uid));
+    });
+  };
 
-  const removeFromFavorites = () => {
-    console.log('removing from favorites');
-  }
+  const removeFavorites = async () => {
+    await removeFromFavorites(uid, recipeId).then(() => {
+      setIsFavorited(false);
+      dispatch(prepareUserData(uid));
+    });
+  };
 
-
-
-
-  const tabInfo = response[0] ? {
-      Ingredients: response[0].extendedIngredients,
-      Instructions: response[0].analyzedInstructions[0].steps,
-      Overview: {
+  const tabInfo = response[0]
+    ? {
+        Ingredients: response[0].extendedIngredients,
+        Instructions: response[0].analyzedInstructions[0].steps,
+        Overview: {
           title: response[0].title,
           source: response[0].sourceName,
           caloricBreakdown: response[0].nutrition.caloricBreakdown,
           prepTime: response[0].preparationMinutes,
-          cookTime: response[0].cookingMinutes
-      },
-  } : { };
+          cookTime: response[0].cookingMinutes,
+        },
+      }
+    : {};
 
   if (loading || response.length < 1) {
-    return (
-      <LoadingScreen />
-    )
+    return <LoadingScreen />;
   }
 
   return (
@@ -96,35 +116,31 @@ const RecipeScreen = ({ route }) => {
             </View>
           </View>
           <View className="w-[90%] h-auto flex">
-              <CustomButton
-                  title={
-                      isFavorited
-                          ? "Remove from Favorites"
-                          : "Add to Favorites"
-                  }
-                  onPress={
-                      isFavorited
-                          ? removeFromFavorites
-                          : addToFavorites
-                  }
-                  buttonColor="bg-blue-200"
-                  textColor="black"
-              />
+            <CustomButton
+              title={isFavorited ? "Remove from Favorites" : "Add to Favorites"}
+              onPress={isFavorited ? removeFavorites : addFavorites}
+              buttonColor="bg-blue-200"
+              textColor="black"
+            />
           </View>
           <View style={{ width: "100%", height: "auto" }}>
             <CustomRow itemDisplay="column">
-                <Text className="bg-black text-orange-300 rounded py-2 px-4 text-[17px]">Overview</Text>
-                <OverviewDetails data={tabInfo.Overview} />
-            </CustomRow>    
-            <CustomRow itemDisplay="column">
-                <Text className="bg-black text-orange-300 rounded py-2 px-4 text-[17px]">Ingredients</Text>
-                <IngredientDetails data={tabInfo.Ingredients} />
+              <Text className="bg-black text-orange-300 rounded py-2 px-4 text-[17px]">
+                Overview
+              </Text>
+              <OverviewDetails data={tabInfo.Overview} />
             </CustomRow>
             <CustomRow itemDisplay="column">
-                <Text className="bg-black text-orange-300 rounded py-2 px-4 text-[17px]">Instructions</Text>
-                <InstructionDetails
-                    data={tabInfo.Instructions}
-                />
+              <Text className="bg-black text-orange-300 rounded py-2 px-4 text-[17px]">
+                Ingredients
+              </Text>
+              <IngredientDetails data={tabInfo.Ingredients} />
+            </CustomRow>
+            <CustomRow itemDisplay="column">
+              <Text className="bg-black text-orange-300 rounded py-2 px-4 text-[17px]">
+                Instructions
+              </Text>
+              <InstructionDetails data={tabInfo.Instructions} />
             </CustomRow>
           </View>
         </View>

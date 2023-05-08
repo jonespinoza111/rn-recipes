@@ -3,6 +3,7 @@ import { getDatabase } from "firebase/database";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "../../App";
 import { firebaseApp } from "../../components/Navigator";
+import { getFavorites } from "../../helpers/DatabaseFunctions";
 
 // export const userReducer = (state = {}, action) => {
 //     switch (action.type) {
@@ -23,11 +24,8 @@ export const prepareUserData = (uid) => async dispatch => {
     const userData = await getDoc(doc(firestore, "users", uid));
     console.log("userData1 ", userData.data())
     const updatedUserData = userData.data();
-    const favorites =
-        updatedUserData &&
-        updatedUserData.favorites === ""
-            ? Object.values(updatedUserData.favorites)
-            : [];
+
+    const favorites = await getFavorites(uid);
     
         console.log('favorites now ', favorites);
 
@@ -35,11 +33,9 @@ export const prepareUserData = (uid) => async dispatch => {
     dispatch(userSlice.actions.getUserData(finalUpdate));
 }
 
-const initialData = { begin: [], hello: '' }
-
 export const userSlice = createSlice({
     name: 'userData',
-    initialState: initialData,
+    initialState: {},
     reducers: {
         getUserData: (state, action) => {
             console.log('action.payload', action.payload);
