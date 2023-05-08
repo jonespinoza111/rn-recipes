@@ -57,8 +57,7 @@ const ImageOptionsScreen = ({ route }) => {
       }
 
       if (!image.canceled) {
-        console.log("cancelled");
-        setPickedImage(image && image.uri);
+        setPickedImage(image && image.assets[0].uri);
       }
 
       navigation.goBack();
