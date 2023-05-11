@@ -19,7 +19,7 @@ import FavoritesScreen from '../screens/FavoritesScreen';
 const Stack = createStackNavigator();
 
 const defaultStackNavOptions = {
-    headerStyle: { backgroundColor: 'white' },
+    headerStyle: { backgroundColor: 'transparent' },
     headerTitleStyle: { color: 'black' },
     headerTitleAlign: 'center'
 }
@@ -51,7 +51,7 @@ const Navigator = () => {
   return (
     <Stack.Navigator screenOptions={defaultStackNavOptions}>
       {!isSignedIn ? (
-        <Stack.Screen name="Auth" component={AuthScreen} />
+        <Stack.Screen options={{ headerShown: false}} name="Auth" component={AuthScreen} />
       ) : (
         <React.Fragment>
             <Stack.Screen name="Main" component={TabsScreen} />

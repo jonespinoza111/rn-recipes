@@ -4,6 +4,7 @@ import {
   ScrollView,
   ImageBackground,
   TextInput,
+  ToastAndroid,
 } from "react-native";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -73,28 +74,14 @@ const EditProfileScreen = ({ navigation }) => {
       description: data.description,
       profileImage: downloadUrl || userData.profileImage,
     })
+      .then(() => ToastAndroid.show('Successfully updated profile!', ToastAndroid.SHORT))
       .then(() => dispatch(prepareUserData(uid)))
       .then(() => navigation.goBack())
       .catch((err) =>
         console.log("There was an error updating the user data ", err)
       );
   };
-
-  const testAdd = async () => {
-    console.log("this is the uid ", uid);
-    let updateObj = { id: "12345", title: "Cookies", image: "image.jpeg" };
-
-    await addToFavorites(uid, "12345", updateObj).then(() =>
-      dispatch(prepareUserData(uid))
-    );
-  };
-
-  const testRemove = async () => {
-    await removeFromFavorites(uid, "12345").then(() =>
-      dispatch(prepareUserData(uid))
-    );
-  };
-  
+ 
   return (
     <View className="flex-1 flex justify-start items-center bg-white">
       <ScrollView className="w-[100%]">

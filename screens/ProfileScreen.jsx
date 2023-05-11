@@ -12,6 +12,7 @@ import CustomButton from "../components/CustomButton";
 import { signOut } from "firebase/auth";
 import { auth } from "../helpers/Firebase";
 import NoProfileImage from "../assets/images/no-profile.jpg";
+import Accordion from "../components/Accordion";
 
 const ProfileScreen = ({ navigation }) => {
   const userData = useSelector((state) => state.userData);

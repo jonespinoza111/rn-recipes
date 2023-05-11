@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, Image, TouchableOpacity, ToastAndroid } from "react-native";
 import React, { useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import useFetch from "../hooks/useFetch";
@@ -16,6 +16,7 @@ import {
   removeFromFavorites,
 } from "../helpers/DatabaseFunctions";
 import { prepareUserData } from "../redux/reducers/user-reducer";
+import Accordion from "../components/Accordion";
 
 const RecipeScreen = ({ route }) => {
   const uid = auth.currentUser.uid;
@@ -45,6 +46,7 @@ const RecipeScreen = ({ route }) => {
     };
     await addToFavorites(uid, recipeId, updateObj).then(() => {
       setIsFavorited(true);
+      ToastAndroid.show('Recipe added to favorites!', ToastAndroid.SHORT);
       dispatch(prepareUserData(uid));
     });
   };
@@ -52,6 +54,7 @@ const RecipeScreen = ({ route }) => {
   const removeFavorites = async () => {
     await removeFromFavorites(uid, recipeId).then(() => {
       setIsFavorited(false);
+      ToastAndroid.show('Recipe removed from favorites!', ToastAndroid.SHORT);
       dispatch(prepareUserData(uid));
     });
   };
@@ -76,7 +79,7 @@ const RecipeScreen = ({ route }) => {
 
   return (
     <View className="flex flex-1 justify-start items-center">
-      <ScrollView className="w-[100%] h-[100%]">
+      <ScrollView className="w-[100%] h-[100%] bg-white">
         <View className="h-[200px] w-[100%] flex justify-center items-center">
           <Image
             resizeMode="cover"
@@ -125,22 +128,22 @@ const RecipeScreen = ({ route }) => {
           </View>
           <View style={{ width: "100%", height: "auto" }}>
             <CustomRow itemDisplay="column">
-              <Text className="bg-black text-orange-300 rounded py-2 px-4 text-[17px]">
-                Overview
-              </Text>
-              <OverviewDetails data={tabInfo.Overview} />
+              <Accordion title="Overview">
+                <OverviewDetails data={tabInfo.Overview} />
+              </Accordion>
             </CustomRow>
             <CustomRow itemDisplay="column">
-              <Text className="bg-black text-orange-300 rounded py-2 px-4 text-[17px]">
-                Ingredients
-              </Text>
-              <IngredientDetails data={tabInfo.Ingredients} />
+              <Accordion title="Ingredients">
+                <IngredientDetails data={tabInfo.Ingredients} />
+              </Accordion>
             </CustomRow>
             <CustomRow itemDisplay="column">
-              <Text className="bg-black text-orange-300 rounded py-2 px-4 text-[17px]">
+              {/* <Text className="bg-black text-orange-300 rounded py-2 px-4 text-[17px]">
                 Instructions
-              </Text>
-              <InstructionDetails data={tabInfo.Instructions} />
+              </Text> */}
+              <Accordion title="Instructions">
+                <InstructionDetails data={tabInfo.Instructions} />
+              </Accordion>
             </CustomRow>
           </View>
         </View>

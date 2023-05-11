@@ -30,7 +30,7 @@ const CustomListRow = ({ recipes, buttonTitle, param }) => {
                 key={index}
                 onPress={() => onPressHandler(id)}
               >
-                <View className="flex flex-col items-center">
+                <View className="flex flex-col items-center w-auto">
                   <RecipeThumbnail url={image} size="large" />
                   <Text
                     numberOfLines={2}

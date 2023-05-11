@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView, ToastAndroid } from 'react-native'
 import React, { useLayoutEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFilters } from '../redux/reducers/filters-reducer';
@@ -26,6 +26,7 @@ const FiltersScreen = ({ navigation }) => {
                     className="mr-[20px]"
                     onPress={() => {
                         dispatch(updateFilters(filters));
+                        ToastAndroid.show("Filters have been applied!", ToastAndroid.SHORT);
                         navigation.goBack();
                     }}
                 >
