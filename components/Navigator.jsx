@@ -33,7 +33,6 @@ const appFonts = {
 const Navigator = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const userData = useSelector((user) => user.userData);
   const dispatch = useDispatch();
 
   const [fontsLoaded] = useFonts(appFonts);
