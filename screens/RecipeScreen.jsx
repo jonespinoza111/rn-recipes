@@ -1,8 +1,7 @@
-import { View, Text, ScrollView, Image, TouchableOpacity, ToastAndroid } from "react-native";
+import { View, Text, ScrollView, Image, ToastAndroid } from "react-native";
 import React, { useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import useFetch from "../hooks/useFetch";
-import { recipeData } from "../data/exampleData";
 import CustomRow from "../components/CustomRow";
 import OverviewDetails from "../components/OverviewDetails";
 import IngredientDetails from "../components/IngredientDetails";
@@ -46,7 +45,7 @@ const RecipeScreen = ({ route }) => {
     };
     await addToFavorites(uid, recipeId, updateObj).then(() => {
       setIsFavorited(true);
-      ToastAndroid.show('Recipe added to favorites!', ToastAndroid.SHORT);
+      ToastAndroid.show("Recipe added to favorites!", ToastAndroid.SHORT);
       dispatch(prepareUserData(uid));
     });
   };
@@ -54,7 +53,7 @@ const RecipeScreen = ({ route }) => {
   const removeFavorites = async () => {
     await removeFromFavorites(uid, recipeId).then(() => {
       setIsFavorited(false);
-      ToastAndroid.show('Recipe removed from favorites!', ToastAndroid.SHORT);
+      ToastAndroid.show("Recipe removed from favorites!", ToastAndroid.SHORT);
       dispatch(prepareUserData(uid));
     });
   };
@@ -89,7 +88,10 @@ const RecipeScreen = ({ route }) => {
         </View>
         <View className="flex py-[15px] items-center w-[100%] h-auto bg-white">
           <View className="w-[80%] h-auto flex flex-row justify-center items-center mb-[10px]">
-            <Text className="text-[20px] text-black text-center capitalize">
+            <Text
+              className="text-[20px] text-black text-center capitalize"
+              style={{ fontFamily: "dm-regular" }}
+            >
               {response[0].title}
             </Text>
           </View>
@@ -99,21 +101,25 @@ const RecipeScreen = ({ route }) => {
                 className="text-orange-200 mr-[5px] text-[15px]"
                 name="stopwatch"
               />
-              <Text>{response[0].readyInMinutes} min(s)</Text>
+              <Text className="mx-[4px]">
+                {response[0].readyInMinutes} min(s)
+              </Text>
             </View>
             <View className="flex flex-row justify-center items-center">
               <FontAwesome5
                 className="text-orange-200 mr-[5px] text-[15px]"
                 name="user"
               />
-              <Text>{response[0].servings} Serving(s)</Text>
+              <Text className="mx-[4px]">
+                {response[0].servings} Serving(s)
+              </Text>
             </View>
             <View className="flex flex-row justify-center items-center">
               <FontAwesome5
                 className="text-orange-200 mr-[5px] text-[15px]"
                 name="tint"
               />
-              <Text className="text-black">
+              <Text className="text-black mx-[4px]">
                 {Math.round(response[0].nutrition.nutrients[0].amount)} Calories
               </Text>
             </View>
@@ -126,7 +132,7 @@ const RecipeScreen = ({ route }) => {
               textColor="black"
             />
           </View>
-          <View style={{ width: "100%", height: "auto" }}>
+          <View className="w-[100%] h-auto">
             <CustomRow itemDisplay="column">
               <Accordion title="Overview">
                 <OverviewDetails data={tabInfo.Overview} />
@@ -138,9 +144,6 @@ const RecipeScreen = ({ route }) => {
               </Accordion>
             </CustomRow>
             <CustomRow itemDisplay="column">
-              {/* <Text className="bg-black text-orange-300 rounded py-2 px-4 text-[17px]">
-                Instructions
-              </Text> */}
               <Accordion title="Instructions">
                 <InstructionDetails data={tabInfo.Instructions} />
               </Accordion>

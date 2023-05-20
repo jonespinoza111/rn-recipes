@@ -4,7 +4,6 @@ import {
   Button,
   Image,
   ScrollView,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -16,8 +15,8 @@ import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import DessertImage from "../assets/images/dessert-image.jpg";
 import RandomImage from "../assets/images/random.png";
-import { FA5Style } from "@expo/vector-icons/build/FontAwesome5";
-import { FontAwesome5 } from "@expo/vector-icons";
+import GetStartedModal from "../components/GetStartedModal";
+import CustomText from "../components/CustomText";
 
 const HomeScreen = () => {
   const [popularData, setPopularData] = useState();
@@ -78,7 +77,7 @@ const HomeScreen = () => {
   }, [fetch]);
 
   useEffect(() => {
-    // getData();
+    getData();
   }, [getData]);
 
   const navigation = useNavigation();
@@ -86,20 +85,22 @@ const HomeScreen = () => {
   const onPressViewAllHandler = (param) => {
     navigation.navigate("Search Results", { searchQuery: param });
   };
-
-  console.log("userdata herer eerere ", userData);
-
   return (
     <View className="flex flex-1 justify-center items-center bg-white">
+      <GetStartedModal />
       <ScrollView className="w-[100%] px-[20px]">
-        <View className="bg-orange-200 my-[10px] flex flex-row p-[10px]">
+        <View className="bg-orange-200 my-[10px] flex flex-row p-[10px] rounded">
           <View className="flex flex-col w-[75%]">
-            <Text className="text-grey-200 w-auto text-[15px] font-light text-left">
-              Welcome, {userData.name}
-            </Text>
-            <Text className="text-black pb-[10px] mr-[10px] text-[20px] font-bold text-left">
-              Check Out Some Amazing Recipes Below!
-            </Text>
+            <CustomText
+              font="dm-regular"
+              styles="text-grey-200 w-auto text-[15px] text-left"
+              text={`Welcome, ${userData.name}`}
+            />
+            <CustomText
+              font="dm-bold"
+              styles="text-black pb-[10px] mr-[10px] text-[20px] text-left"
+              text="Check Out Some Amazing Recipes Below!"
+            />
           </View>
           <View className="w-[20%] flex justify-center items-center">
             <Image
@@ -108,18 +109,23 @@ const HomeScreen = () => {
             />
           </View>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("Search Results", { searchQuery: 'Steak' })}>
-            <View className="h-[400px]">
-                <Image
-                    source={require("../assets/images/front-page-image.jpg")}
-                    style={{ width: "100%", height: 400 }}
-                />
-                <View className="absolute h-[400px] w-[100%] bg-[#00000055] flex justify-center items-center">
-                    <Text className="text-white text-[30px] w-[150px]">
-                    All Steak Recipes!
-                    </Text>
-                </View>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Search Results", { searchQuery: "Steak" })
+          }
+        >
+          <View className="h-[400px]">
+            <Image
+              source={require("../assets/images/front-page-image.jpg")}
+              style={{ width: "100%", height: 400 }}
+            />
+            <View className="absolute h-[400px] w-[100%] bg-[#00000055] flex justify-center items-center">
+              <CustomText
+                styles="text-white text-[30px] w-[150px]"
+                text="All Steak Recipes!"
+              />
             </View>
+          </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() =>
@@ -132,9 +138,11 @@ const HomeScreen = () => {
         >
           <View className="bg-blue-200 my-[10px] flex flex-row p-[10px] rounded">
             <View className="flex flex-col justify-center items-start w-[75%] h-[120px]">
-              <Text className="text-black pb-[10px] mr-[10px] text-[22px] font-bold text-left">
-                Click here for a random recipe
-              </Text>
+              <CustomText
+                font="dm-bold"
+                styles="text-black pb-[10px] mr-[10px] text-[22px] text-left"
+                text="Click here for a random recipe"
+              />
             </View>
             <View className="w-[20%] flex justify-center items-center">
               <Image
@@ -145,7 +153,7 @@ const HomeScreen = () => {
           </View>
         </TouchableOpacity>
         <CustomRow itemDisplay="column">
-          <Text className="text-[18px] mb-2">Popular</Text>
+          <CustomText styles="text-[18px] mb-2 font-semibold" text="Popular" />
           <CustomListRow
             recipes={popularData}
             buttonTitle="Popular"
@@ -154,7 +162,7 @@ const HomeScreen = () => {
           />
         </CustomRow>
         <CustomRow itemDisplay="column">
-          <Text className="text-[18px] mb-2">{chosenDiet.title}</Text>
+          <CustomText styles="text-[18px] mb-2" text={`${chosenDiet.title}`} />
           <CustomListRow
             recipes={dietData}
             buttonTitle={chosenDiet.title}
@@ -165,17 +173,20 @@ const HomeScreen = () => {
 
         <View className="bg-orange-200 my-[10px] flex p-[2px] rounded justify-center items-center">
           <View className="flex flex-row items-center justify-start w-[100%] h-[90px]">
-            <Text className="text-black text-[22px] ml-[10px] font-bold text-left">
-              You can add recipes to your favorites list!
-            </Text>
+            <CustomText
+              font="dm-bold"
+              styles="text-black text-[22px] ml-[10px] font-bold text-left"
+              text="You can add recipes to your favorites list!"
+            />
           </View>
-          {/* <View className="w-[25%] flex justify-center items-start">
-                <Image className="w-[70px] h-[70px] rounded-full" source={DessertImage} />
-            </View> */}
         </View>
 
         <CustomRow itemDisplay="column">
-          <Text className="text-[18px] mb-2">{chosenCategory.title}</Text>
+          <CustomText
+            styles="text-[18px] mb-2"
+            text={`${chosenCategory.title}`}
+          />
+
           {categoryData && categoryData.results ? (
             categoryData.results.map((categoryRecipe, index) => (
               <RecipeListItem key={index} recipe={categoryRecipe} />
@@ -187,6 +198,7 @@ const HomeScreen = () => {
           )}
           <CustomRow extraStyles="px-0 mx-0" itemDisplay="column">
             <Button
+              styles={{ fontFamily: "dm-regular" }}
               title={`View all ${chosenCategory.title || ""}`}
               color="black"
               onPress={() => onPressViewAllHandler(chosenCategory.title)}
@@ -195,7 +207,10 @@ const HomeScreen = () => {
         </CustomRow>
 
         <CustomRow itemDisplay="column">
-          <Text className="text-[18px] mb-2">{chosenCuisine.title}</Text>
+          <CustomText
+            styles="text-[18px] mb-2"
+            text={`${chosenCuisine.title}`}
+          />
           {cuisineData && cuisineData.results ? (
             cuisineData.results.map((cuisineRecipe, index) => (
               <RecipeListItem key={index} recipe={cuisineRecipe} />
@@ -207,6 +222,7 @@ const HomeScreen = () => {
           )}
           <CustomRow extraStyles="px-0 mx-0" itemDisplay="column">
             <Button
+              styles={{ fontFamily: "dm-regular" }}
               title={`View all ${chosenCuisine.title || ""}`}
               color="black"
               onPress={() => onPressViewAllHandler(chosenCuisine.title)}

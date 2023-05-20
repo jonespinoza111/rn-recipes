@@ -1,6 +1,5 @@
 import {
   View,
-  Text,
   ScrollView,
   ImageBackground,
   TextInput,
@@ -13,20 +12,14 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import CustomButton from "../components/CustomButton";
-import * as Random from "expo-random";
-import { auth, firestore, storage } from "../helpers/Firebase";
+import { auth, firestore } from "../helpers/Firebase";
 import { doc, updateDoc } from "@firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 import { prepareUserData } from "../redux/reducers/user-reducer";
 import {
   deleteImageFromStorage,
   uploadImageToStorage,
 } from "../helpers/StorageFunctions";
-import {
-  addToFavorites,
-  getFavorites,
-  removeFromFavorites,
-} from "../helpers/DatabaseFunctions";
+import CustomText from "../components/CustomText";
 
 const schema = yup.object().shape({
   name: yup.string().required("You must enter a name").min(6),
@@ -41,8 +34,6 @@ const EditProfileScreen = ({ navigation }) => {
   const userData = useSelector((state) => state.userData);
   const dispatch = useDispatch();
   let uid = auth.currentUser.uid;
-
-  const favorites = useSelector((state) => userData);
 
   const {
     control,
@@ -74,14 +65,16 @@ const EditProfileScreen = ({ navigation }) => {
       description: data.description,
       profileImage: downloadUrl || userData.profileImage,
     })
-      .then(() => ToastAndroid.show('Successfully updated profile!', ToastAndroid.SHORT))
+      .then(() =>
+        ToastAndroid.show("Successfully updated profile!", ToastAndroid.SHORT)
+      )
       .then(() => dispatch(prepareUserData(uid)))
       .then(() => navigation.goBack())
       .catch((err) =>
         console.log("There was an error updating the user data ", err)
       );
   };
- 
+
   return (
     <View className="flex-1 flex justify-start items-center bg-white">
       <ScrollView className="w-[100%]">
@@ -99,7 +92,7 @@ const EditProfileScreen = ({ navigation }) => {
         </View>
         <View className="w-[100%] h-auto flex items-start bg-white px-[30px] py-[20px]">
           <View className="flex justify-start w-[100%] mb-[10px]">
-            <Text className="text-[14px] mb-[5px]">Name</Text>
+            <CustomText styles="text-[14px] mb-[5px]" text="Name" />
             <Controller
               name="name"
               defaultValue={userData.name}
@@ -109,7 +102,6 @@ const EditProfileScreen = ({ navigation }) => {
                 <TextInput
                   className="border-1 w-[100%] pl-[10px] bg-[#ece8e8] border-[#dddddd]"
                   onChangeText={(value) => {
-                    console.log("This is the value in this", value);
                     onChange(value);
                     setIsNameChanged(value !== userData.name);
                   }}
@@ -119,7 +111,7 @@ const EditProfileScreen = ({ navigation }) => {
             />
           </View>
           <View className="flex justify-start w-[100%] mb-[10px]">
-            <Text className="text-[14px] mb-[5px]">Description</Text>
+            <CustomText styles="text-[14px] mb-[5px]" text="Description" />
             <Controller
               name="description"
               defaultValue={userData.description}
@@ -129,7 +121,6 @@ const EditProfileScreen = ({ navigation }) => {
                 <TextInput
                   className="border-1 w-[100%] pl-[10px] bg-[#ece8e8] border-[#dddddd]"
                   onChangeText={(value) => {
-                    console.log("This is the value in this", value);
                     onChange(value);
                     setIsDescChanged(value !== userData.description);
                   }}
@@ -139,7 +130,10 @@ const EditProfileScreen = ({ navigation }) => {
             />
           </View>
           <View className="flex justify-start w-[100%] mb-[10px]">
-            <Text className="text-[14px] mb-[5px]">Contact Information</Text>
+            <CustomText
+              styles="text-[14px] mb-[5px]"
+              text="Contact Information"
+            />
             <Controller
               name="email"
               defaultValue={userData.email}
@@ -149,7 +143,6 @@ const EditProfileScreen = ({ navigation }) => {
                 <TextInput
                   className="border-1 w-[100%] pl-[10px] bg-[#ece8e8] border-[#dddddd]"
                   onChangeText={(value) => {
-                    console.log("This is the value in this", value);
                     onChange(value);
                     setIsContactChanged(value !== userData.email);
                   }}

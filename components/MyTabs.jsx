@@ -1,17 +1,17 @@
-import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import { FontAwesome } from "@expo/vector-icons";
 import SearchScreen from "../screens/SearchScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import RecipeScreen from "../screens/RecipeScreen";
 
 const Tab = createBottomTabNavigator();
 
 const MyTabs = () => {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      screenOptions={{ headerShown: false, tabBarActiveTintColor: "black" }}
+    >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
@@ -40,5 +40,3 @@ const MyTabs = () => {
 };
 
 export default MyTabs;
-
-const styles = StyleSheet.create({});

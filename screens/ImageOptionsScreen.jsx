@@ -1,9 +1,9 @@
-import { View, Alert, Text } from "react-native";
-import React, { useState } from "react";
+import { View } from "react-native";
+import React from "react";
 import CustomButton from "../components/CustomButton";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
-import { Button } from "react-native";
+import CustomText from "../components/CustomText";
 
 const ImageOptionsScreen = ({ route }) => {
   const { setPickedImage } = route.params;
@@ -11,44 +11,11 @@ const ImageOptionsScreen = ({ route }) => {
 
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
 
-  const openCamera = async () => {
-    console.log("opening camera ", status);
-    try {
-      let image = await ImagePicker.launchCameraAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-
-      console.log("new image takenv ", image);
-    } catch (err) {
-      console.log("can't open camera because ", err);
-    }
-  };
-
   const selectImageHandler = async (type) => {
-    console.log("this is the status my dude", status);
     try {
       if (!status) return;
       let image;
-      if (type === "camera") {
-        const { status: existingStatus } =
-          await ImagePicker.getCameraPermissionsAsync();
-        console.log("trying to open camera");
-
-        if (existingStatus) {
-          console.log("nice");
-        }
-        image = await ImagePicker.launchCameraAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          base64: false,
-          aspect: [4, 3],
-          quality: 0.5,
-        });
-        console.log("dude man", image);
-      } else if (type === "library") {
+      if (type === "library") {
         image = await ImagePicker.launchImageLibraryAsync({
           allowsEditing: true,
           aspect: [4, 3],
@@ -69,9 +36,10 @@ const ImageOptionsScreen = ({ route }) => {
   if (status && !status.granted) {
     return (
       <View className="bg-white w-[100%] h-[100%] py-[15px] flex-column items-center">
-        <Text className="text-center">
-          We need permission to use the camera.
-        </Text>
+        <CustomText
+          styles="text-center"
+          text="We need permission to use the camera."
+        />
         <View className="flex justify-center items-center w-[90%]">
           <CustomButton
             title="Grant Permission"
@@ -85,12 +53,6 @@ const ImageOptionsScreen = ({ route }) => {
   }
   return (
     <View className="flex flex-1 px-[10%] pt-[10px] justify-start items-center bg-white">
-      <CustomButton
-        title="Take new photo"
-        onPress={() => openCamera()}
-        buttonColor="bg-blue-200"
-        textColor="text-black"
-      />
       <CustomButton
         title="Choose photo"
         onPress={() => selectImageHandler("library")}
