@@ -17,6 +17,7 @@ import DessertImage from "../assets/images/dessert-image.jpg";
 import RandomImage from "../assets/images/random.png";
 import GetStartedModal from "../components/GetStartedModal";
 import CustomText from "../components/CustomText";
+import { API_LINK, API_KEY } from "@env";
 
 const HomeScreen = () => {
   const [popularData, setPopularData] = useState();
@@ -39,17 +40,17 @@ const HomeScreen = () => {
     setChosenDiet(diet);
 
     const urls = [
-      `https://api.spoonacular.com/recipes/complexSearch?sort=random&instructionsRequired=true&number=${5}&apiKey=4c14342fb0bf4bcdb5952945a0e7e7ca`,
-      `https://api.spoonacular.com/recipes/complexSearch?type=${
+      `${API_LINK}/recipes/complexSearch?sort=random&instructionsRequired=true&number=${5}&apiKey=${API_KEY}`,
+      `${API_LINK}/recipes/complexSearch?type=${
         category.param
-      }&number=${5}&instructionsRequired=true&apiKey=4c14342fb0bf4bcdb5952945a0e7e7ca`,
-      `https://api.spoonacular.com/recipes/complexSearch?cuisine=${
+      }&number=${5}&instructionsRequired=true&apiKey=${API_KEY}`,
+      `${API_LINK}/recipes/complexSearch?cuisine=${
         cuisine.param
-      }&number=${5}&instructionsRequired=true&apiKey=4c14342fb0bf4bcdb5952945a0e7e7ca`,
-      `https://api.spoonacular.com/recipes/complexSearch?diet=${
+      }&number=${5}&instructionsRequired=true&apiKey=${API_KEY}`,
+      `${API_LINK}/recipes/complexSearch?diet=${
         diet.param
-      }&instructionsRequired=true&number=${5}&apiKey=4c14342fb0bf4bcdb5952945a0e7e7ca`,
-      `https://api.spoonacular.com/recipes/random?number=1&instructionsRequired=true&apiKey=4c14342fb0bf4bcdb5952945a0e7e7ca`,
+      }&instructionsRequired=true&number=${5}&apiKey=${API_KEY}`,
+      `${API_LINK}/recipes/random?number=1&instructionsRequired=true&apiKey=${API_KEY}`,
     ];
 
     await Promise.all([

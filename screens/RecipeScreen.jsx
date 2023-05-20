@@ -16,6 +16,7 @@ import {
 } from "../helpers/DatabaseFunctions";
 import { prepareUserData } from "../redux/reducers/user-reducer";
 import Accordion from "../components/Accordion";
+import { API_LINK, API_KEY } from "@env";
 
 const RecipeScreen = ({ route }) => {
   const uid = auth.currentUser.uid;
@@ -27,7 +28,7 @@ const RecipeScreen = ({ route }) => {
   );
 
   const [response, loading, hasError] = useFetch(
-    `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=true&apiKey=4c14342fb0bf4bcdb5952945a0e7e7ca`,
+    `${API_LINK}/recipes/${recipeId}/information?includeNutrition=true&apiKey=${API_KEY}`,
     {
       method: "GET",
       headers: {

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import RecipeListItem from "../components/RecipeListItem";
 import { useSelector } from "react-redux";
+import { API_LINK, API_KEY } from "@env";
 
 const SearchResultsScreen = ({ route, navigation }) => {
   const filters = useSelector((state) => state.filters);
@@ -24,7 +25,7 @@ const SearchResultsScreen = ({ route, navigation }) => {
   const [offset, setOffset] = useState(0);
   const [initialLoad, setInitialLoad] = useState(false);
   const [urlString, setUrlString] = useState(
-    `https://api.spoonacular.com/recipes/complexSearch?query=${searchQuery}&type=${typeParam}&diet=${dietParam}&cuisine=${cuisineParam}&intolerances=${intoleranceParam}&number=${fetchNumber}&sort=${sortParam}&instructionsRequired=true&offset=${offset}&apiKey=4c14342fb0bf4bcdb5952945a0e7e7ca`
+    `${API_LINK}/recipes/complexSearch?query=${searchQuery}&type=${typeParam}&diet=${dietParam}&cuisine=${cuisineParam}&intolerances=${intoleranceParam}&number=${fetchNumber}&sort=${sortParam}&instructionsRequired=true&offset=${offset}&apiKey=${API_KEY}`
   );
 
   const [response, loading, hasError] = useFetch(urlString, {
@@ -36,7 +37,7 @@ const SearchResultsScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     setUrlString(
-      `https://api.spoonacular.com/recipes/complexSearch?query=${searchQuery}&type=${typeParam}&diet=${dietParam}&cuisine=${cuisineParam}&intolerances=${intoleranceParam}&number=${fetchNumber}&sort=${sortParam}&instructionsRequired=true&offset=${offset}&apiKey=eaca26685ac1458ba5003ef51e1941c1`
+      `${API_LINK}/recipes/complexSearch?query=${searchQuery}&type=${typeParam}&diet=${dietParam}&cuisine=${cuisineParam}&intolerances=${intoleranceParam}&number=${fetchNumber}&sort=${sortParam}&instructionsRequired=true&offset=${offset}&apiKey=${API_KEY}`
     );
   }, [offset]);
 
