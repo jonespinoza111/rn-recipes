@@ -6,9 +6,9 @@ const OverviewDetails = ({ data }) => {
   const { title, prepTime, cookTime, source, caloricBreakdown } = data;
   return (
     <View className="flex justify-center items-start w-[100%] mt-[10px] pl-[10px]">
-      <View className="flex flex-row justify-start items-start w-[100%] mb-[2px]">
+      <View className="flex flex-row flex-wrap justify-start items-start w-[100%] mb-[2px]">
         <CustomText styles="text-[18px] text-orange-400" text="Name: " />
-        <CustomText styles=" text-[18px]" text={`${title || "N/A"}`} />
+        <CustomText styles=" text-[18px] text-wrap" text={`${title || "N/A"}`} />
       </View>
       <View className="flex flex-row justify-start items-start w-[100%] mb-[2px]">
         <CustomText styles="text-[18px] text-orange-400" text="Prep Time: " />
