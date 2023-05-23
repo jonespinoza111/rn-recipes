@@ -17,6 +17,7 @@ and details about the recipes. Features and technology included in this project:
 # Getting Started:
 
 Open the camera app on your device and scan the code below
+
 ![image](https://github.com/jonespinoza111/rn-recipes/assets/122172851/815b83a7-6965-4b9e-aa46-b49d45188caa)
 
 
