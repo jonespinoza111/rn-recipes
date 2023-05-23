@@ -1,10 +1,21 @@
+import {
+  FIREBASE_API_KEY,
+  FIREBASE_AUTH_DOMAIN,
+  FIREBASE_PROJECT_ID,
+  FIREBASE_STORAGE_BUCKET,
+  FIREBASE_MESSAGING_SENDER_ID,
+  FIREBASE_APP_ID,
+  FIREBASE_MEASUREMENT_ID,
+  FIREBASE_DATABASE_URL,
+} from "@env";
+
 export const firebaseConfig = {
-  apiKey: "AIzaSyCX31SJ1ue3aJnGOU6WpqcD-TbJYTs1TDA",
-  authDomain: "rn-recipes-566aa.firebaseapp.com",
-  projectId: "rn-recipes-566aa",
-  storageBucket: "rn-recipes-566aa.appspot.com",
-  messagingSenderId: "922034139140",
-  appId: "1:922034139140:web:4e24ceacb14f1bd39dc551",
-  measurementId: "G-SRW91ECG2J",
-  databaseURL: "https://rn-recipes-566aa.us-east1.firebasedatabase.app"
+  apiKey: FIREBASE_API_KEY,
+  authDomain: FIREBASE_AUTH_DOMAIN,
+  projectId: FIREBASE_PROJECT_ID,
+  storageBucket: FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+  appId: FIREBASE_APP_ID,
+  measurementId: FIREBASE_MEASUREMENT_ID,
+  databaseURL: FIREBASE_DATABASE_URL,
 };
